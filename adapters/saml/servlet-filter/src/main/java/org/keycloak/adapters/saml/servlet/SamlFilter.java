@@ -136,7 +136,8 @@ public class SamlFilter implements Filter {
             return;
         }
         FilterSamlSessionStore tokenStore = new FilterSamlSessionStore(request, facade, 100000, idMapper, deployment);
-        boolean isEndpoint = request.getRequestURI().substring(request.getContextPath().length()).endsWith("/saml");
+        String contextPath = request.getRequestURI().substring(request.getContextPath().length());
+        boolean isEndpoint = contextPath.endsWith("/saml") || contextPath.endsWith("/acs");
         SamlAuthenticator authenticator;
         if (isEndpoint) {
             authenticator = new SamlAuthenticator(facade, deployment, tokenStore) {
